@@ -24,7 +24,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author yuto.nakamura
  */
 public class Step01VariableTest extends PlainTestCase {
 
@@ -44,11 +44,33 @@ public class Step01VariableTest extends PlainTestCase {
     public void test_variable_initial() {
         String sea = "mystic";
         Integer land = 8;
+        //int land = 8;
         String piari = null;
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
-        log(sea); // your answer? => 
+
+        //land = land + piari; 流石にダメだった
+        //sea = land + piari + ":" + dstore;
+        //sea = land + 9;
+        //sea = land + "9";
+        log(sea); // your answer? => mystic8:mai
     }
+    //nullは反映されないと思っていたのでびっくり
+    //そもそも異なる型同士で計算可能なのはなぜ？裏でto_string的なのが走ってる？
+    //足し算の最初が Int でも正常に動作した(51行目) → 結果を入れる変数がStringなら全て文字列の結合として計算される？
+    //53行目はダメで54行目は"89"になったので、どこかにStringが含まれてないと文字列の結合と見做されないのかも
+
+    //Integerって何者？intとは違うの？(intにしても同じ結果が出力された）
+    //調べた結果：
+    //int:早い、nullが入らない、プリテミティブ（←これもなに？？？）
+    //Integer:nullが入る、クラス型（？）、メソッドが使える（？)、int を包むオブジェクト（？）
+
+    //クラス：設計図　こういう物を作れますよという定義　String,Integerなど Cの構造体に関数を持たせられるような感じ
+    //オブジェクト：クラスから作られた実体 Integer land の landの方はオブジェクトへの参照を持ってる（Cのポインタみたいな感じ）
+    //プリミティブ：値を直接持つ型 int double char など
+    //メソッド：List　to_String　など
+
+    //to 久保さん:調べるごとにさらに気になることが出てきてしまい、発散しすぎてしまうように感じるのですが、どのように要点を絞ると良いでしょうか？
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -56,7 +78,7 @@ public class Step01VariableTest extends PlainTestCase {
         String land = "oneman";
         sea = land;
         land = land + "'s dreams";
-        log(sea); // your answer? => 
+        log(sea); // your answer? => oneman
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -65,7 +87,7 @@ public class Step01VariableTest extends PlainTestCase {
         int land = 415;
         sea = land;
         land++;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 415
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -75,8 +97,20 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         sea = land.add(new BigDecimal(1));
         sea.add(new BigDecimal(1));
-        log(sea); // your answer? => 
+        //sea = sea.add(new BigDecimal(1));
+        log(sea); // your answer? => 417
     }
+    //417になると思ってたのに、98行,99行目どちらかが足し算になってない..?
+    //コメントアウトして試したところ、99行目が加算になってないようだった
+
+    //そもそもBigDecimalって何？
+    //10進数で計算する、誤差のない少数。immutable（変更不可） オブジェクト
+    //"+"はプリミティブ型用なので、代わりに add を使う！ 中身は不変なので、新しい値が返される
+    //99行目が加算になってないのは、addが中身を変えるメソッドじゃないからだ！！
+
+    //100行目を試したところ、普通に加算された。あれ？immutableじゃないの？
+    //調べた結果：seaという変数自体は可変 seaが参照しているBigDecimalオブジェクト本体は不変
+    //オブジェクトの値が変更されたのではなく、seaが参照するオブジェクトが変わった
 
     // ===================================================================================
     //                                                                   Instance Variable
