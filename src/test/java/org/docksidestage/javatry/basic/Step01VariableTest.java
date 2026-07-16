@@ -59,18 +59,30 @@ public class Step01VariableTest extends PlainTestCase {
     //そもそも異なる型同士で計算可能なのはなぜ？裏でto_string的なのが走ってる？
     //足し算の最初が Int でも正常に動作した(53行目) → 結果を入れる変数がStringなら全て文字列の結合として計算される？
     //54行目はダメで55行目は"89"になったので、どこかにStringが含まれてないと文字列の結合と見做されないのかも
+    // TODO nakamura [ふぉろー] まさしく裏で toString() が実行されています by jflute (2026/07/16)
+    // +演算子は、Stringがあったら他の型はそこにひきずりこまれていきます。
+    // "+" の意味がStringに優先されると言う感じですね。文字列連結するぞと。
 
     //Integerって何者？intとは違うの？(intにしても同じ結果が出力された）
     //調べた結果：
     //int:早い、nullが入らない、プリテミティブ（←これもなに？？？）
     //Integer:nullが入る、クラス型（？）、メソッドが使える（？)、int を包むオブジェクト（？）
+    // TODO nakamura [読み物課題] Java Beginner's Hint - プリミティブ型とラッパー型 by jflute (2026/07/16)
+    // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
 
     //クラス：設計図　こういう物を作れますよという定義　String,Integerなど Cの構造体に関数を持たせられるような感じ
     //オブジェクト：クラスから作られた実体 Integer land の landの方はオブジェクトへの参照を持ってる（Cのポインタみたいな感じ）
     //プリミティブ：値を直接持つ型 int double char など
     //メソッド：List　to_String　など
+    // TODO nakamura [ふぉろー] オブジェクトとインスタンスがニアリーイコールみたいな感じでよく使われます by jflute (2026/07/16)
+    // "Cの構造体に関数を持たせられるような感じ" という表現は本当に素晴らしい。
 
     //to 久保さん:調べるごとにさらに気になることが出てきてしまい、発散しすぎてしまうように感じるのですが、どのように要点を絞ると良いでしょうか？
+    // TODO nakamura [へんじ] 好奇心旺盛なのは素晴らしい笑。確かに60分という制約もありますからね... by jflute (2026/07/16)
+    // でも気になる時にインプットした方が効率良いというのもありますし、いま時間使った分、後のjavatryはサクッと進めるので、
+    // 発散しすぎはそこまで気にしなくても良いとは思います。
+    // さすがにキリがないって思ったら、自分用メモで、「#later 後でxxxを調べたい」とか目印を付けておくとか。
+    // #later で検索すれば後で調べようと思ったことを一覧化できるので。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -107,10 +119,14 @@ public class Step01VariableTest extends PlainTestCase {
     //10進数で計算する、誤差のない少数。immutable（変更不可） オブジェクト
     //"+"はプリミティブ型用なので、代わりに add を使う！ 中身は不変なので、新しい値が返される
     //99行目が加算になってないのは、addが中身を変えるメソッドじゃないからだ！！
+    // TODO nakamura [いいね] yes, そういうことです。 by jflute (2026/07/16)
 
     //100行目を試したところ、普通に加算された。あれ？immutableじゃないの？
     //調べた結果：seaという変数自体は可変 seaが参照しているBigDecimalオブジェクト本体は不変
     //オブジェクトの値が変更されたのではなく、seaが参照するオブジェクトが変わった
+    // TODO nakamura [いいね] yes, yes, そういうことです。 by jflute (2026/07/16)
+    // 自分自分のインスタンスの状態は変わってなく、seaという変数が指し示すインスタンスが差し変わっただけと。
+    // この違いを理解するのはとても重要です。
 
     //BigDecimalの疑問
     //"Big"ということは、普通のDecimalもある？
@@ -119,6 +135,11 @@ public class Step01VariableTest extends PlainTestCase {
     //→数万回呼ばれたり、数msのレスポンスを意識する場合は、適切にdoubleと使い分けることが必要
     //BigDecimal:重いけど正確。金額計算などに使う
     //double:早くてちょいちょい誤差が出る。ゲーム・物理演算などに使う
+    // TODO nakamura [ふぉろー] webサービスの実務だとほぼほぼ全部BigDecimalですね by jflute (2026/07/16)
+    // 変に誤差が出ても困るし、インフラの性能が格段に上がったので、BigDecimalのコストをあまり考えなくても良くなりました。
+
+    // TODO jflute 1on1にて、immutableのお話しじっくりフォロー予定。あとadd()のコードリーディングも (2026/07/16)
+    // ↑くぼの備忘録とぅどぅなので、そのままにしておいて大丈夫です
 
     // ===================================================================================
     //                                                                   Instance Variable
