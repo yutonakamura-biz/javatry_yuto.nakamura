@@ -185,29 +185,38 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_via_method() {
         instanceBroadway = "bbb";
         instanceMagiclamp = "magician";
-        helpInstanceVariableViaMethod(instanceMagiclamp);
+        helpInstanceVariableViaMethod (instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => bbb|0|null|magician  correct = bigband|1|null|magician
     }
+        //instanceBroadway:privateで、引数として渡してないから変更されないと思った。でも良く考えたらコンパイルエラーにならない時点で参照できてる？
+        //instanceDockside:同上
+        //instanceHangar:変更されてないのでnullのまま
+        //instanceMagiclamp:引数としてのinstanceMagiclampと、上で宣言している変数が別物だから変化しなかった？
+
+        //調べた結果
+        //privateは「他のクラスから触れないよ！」って意味らしい
+        //Step01VariableTestという同じクラスの中では、privateでも普通に扱える
+        //宣言していたものと、引数として新たに宣言したものは別物
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
@@ -226,8 +235,9 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "harbor";
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
     }
+    //引数としてのString sea と String sea = "harbor" は別物
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
@@ -242,14 +252,24 @@ public class Step01VariableTest extends PlainTestCase {
     public void test_variable_method_argument_mutable_methodcall() {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
-        helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        Integer sky = 400;
+        helpMethodArgumentMethodcall(sea, land, sky);
+        log(sea); // your answer? => harbor correct answer = harbor416;
+        log(land); //一応試したけど流石に 415 だった。
+        log(sky);
     }
 
-    private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
+    private void helpMethodArgumentMethodcall(StringBuilder sea, int land, Integer sky) {
         ++land;
+        ++sky;
         sea.append(land);
     }
+
+
+    //StringBuilder は 可変で加算がしやすいString
+    //上のメソッドで定義してる sea と引数の sea が指しているインスタンスが一緒だから変更されている？　なんでだ？
+    //StringBuilderは値を渡しているのではなく、インスタンスを指し示している変数をコピーしている。appendで値を直接変更しているため、元のメソッドでも反映される
+    //Integerはimmutableなので、++skyの際に新たなインスタンスが作られて変数がさすアドレスが変更される。→元のメソッドのskyは変わらない！
 
     // -----------------------------------------------------
     //                                   Variable Assignment
@@ -259,7 +279,7 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -267,6 +287,10 @@ public class Step01VariableTest extends PlainTestCase {
         String seaStr = sea.toString(); // is "harbor"
         sea = new StringBuilder(seaStr).append(land);
     }
+
+    //sea = new StringBuilder(seaStr).append(land);
+    //appendで直接値を変えているのではなく、再代入しているため元のメソッドには反映されない。
+
 
     // ===================================================================================
     //                                                                           Challenge
@@ -287,9 +311,17 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+    int piari;
     public void test_variable_writing() {
         // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        log(sea + ", " + land + ", " + piari);
     }
+
+    //ローカル変数・インスタンス変数がわからなかったの調べた
+    //ローカル変数：メソッドの中で定義される変数
+    //インスタンス変数：classの中(メソッド外）で定義される変数。classが呼び出されるたびに別物が作られる
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -300,11 +332,25 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * メソッド終了時の変数 B の中身は？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
+
     public void test_variable_yourExercise() {
         // write your code here
+        int A = 10;
+        Integer B = null;
+        B = A;
+
+        B += 'B' - 'A';
+        log(B);
     }
+
+    //staticを使った問題を作ろうと思ったが、java8ではダメらしい... (inner classにstaticを作れない？）
+
+    //Integer B = null の直後にB += 'B' - 'A'; を記載するとエラーが出た。
+    //調べた結果：Integerは加算時にアンボクシングしてintに変換してから計算している
+    //          その結果、nullをintに変換しようとしてエラーが発生していた。Integer　B の初期値を0にするとエラーが起きなかった。
+    //          BigDecimalのaddみたいにそのまま加算できないのかと調べたけど、周りくどい手法以外ないっぽい？
 }
