@@ -204,19 +204,25 @@ public class Step01VariableTest extends PlainTestCase {
     public void test_variable_instance_variable_via_method() {
         instanceBroadway = "bbb";
         instanceMagiclamp = "magician";
-        helpInstanceVariableViaMethod (instanceMagiclamp);
+        helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
         log(sea); // your answer? => bbb|0|null|magician  correct = bigband|1|null|magician
     }
-        //instanceBroadway:privateで、引数として渡してないから変更されないと思った。でも良く考えたらコンパイルエラーにならない時点で参照できてる？
-        //instanceDockside:同上
-        //instanceHangar:変更されてないのでnullのまま
-        //instanceMagiclamp:引数としてのinstanceMagiclampと、上で宣言している変数が別物だから変化しなかった？
+    //instanceBroadway:privateで、引数として渡してないから変更されないと思った。でも良く考えたらコンパイルエラーにならない時点で参照できてる？
+    //instanceDockside:同上
+    //instanceHangar:変更されてないのでnullのまま
+    //instanceMagiclamp:引数としてのinstanceMagiclampと、上で宣言している変数が別物だから変化しなかった？
 
-        //調べた結果
-        //privateは「他のクラスから触れないよ！」って意味らしい
-        //Step01VariableTestという同じクラスの中では、privateでも普通に扱える
-        //宣言していたものと、引数として新たに宣言したものは別物
+    //調べた結果
+    //privateは「他のクラスから触れないよ！」って意味らしい
+    //Step01VariableTestという同じクラスの中では、privateでも普通に扱える
+    //宣言していたものと、引数として新たに宣言したものは別物
+
+    // TODO nakamura [ふぉろー] そうですね、コンパイルエラーになってない時点でprivateに関しては大丈夫と捉えて良いですね by jflute (2026/08/05)
+    // そして、メソッド呼び出し時、呼び出し側で指定した変数自体がメソッドの渡っていくのではなく、
+    // あくまで中身だけが渡っていって、受け取り側の引数変数で受け取るという感じになります。
+    // (厳密には、アドレスがコピーされるだけ)
+    // 今回はたまたま同じ名前の変数名でしたが、変数という箱としては別物です。
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
@@ -238,6 +244,10 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => harbor
     }
     //引数としてのString sea と String sea = "harbor" は別物
+    // TODO nakamura [いいね] yes, yes by jflute (2026/08/05)
+    // 実務でもこういうケースはよくあります。例えば、memberId (会員ID) という変数名で取り扱ってて、
+    // 引数側でも memberId という引数変数名で受け取るとか。業務的に同じものということで。
+    // 
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
@@ -257,6 +267,13 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => harbor correct answer = harbor416;
         log(land); //一応試したけど流石に 415 だった。
         log(sky);
+        // TODO nakamura [ふぉろー] 試すのいいですね！ by jflute (2026/08/05)
+        // まず、プリミティブ型は変数に値そのものが入っているイメージですから、
+        // help内の ++land; でも、helpのland変数の中身が+1されただけとなります。
+        // そして、Integerであっても、++sky; って、要は sky = sky + 1 ですから、
+        // これまた help内の sky のアドレスが+1された別インスタンスに差し変わっただけと。
+        //
+        // それにしても、次の新しいパークで sky ができたらいいですね。
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land, Integer sky) {
@@ -264,7 +281,6 @@ public class Step01VariableTest extends PlainTestCase {
         ++sky;
         sea.append(land);
     }
-
 
     //StringBuilder は 可変で加算がしやすいString
     //上のメソッドで定義してる sea と引数の sea が指しているインスタンスが一緒だから変更されている？　なんでだ？
@@ -291,7 +307,6 @@ public class Step01VariableTest extends PlainTestCase {
     //sea = new StringBuilder(seaStr).append(land);
     //appendで直接値を変えているのではなく、再代入しているため元のメソッドには反映されない。
 
-
     // ===================================================================================
     //                                                                           Challenge
     //                                                                           =========
@@ -312,6 +327,7 @@ public class Step01VariableTest extends PlainTestCase {
      * </pre>
      */
     int piari;
+
     public void test_variable_writing() {
         // define variables here
         String sea = "mystic";
@@ -322,6 +338,8 @@ public class Step01VariableTest extends PlainTestCase {
     //ローカル変数・インスタンス変数がわからなかったの調べた
     //ローカル変数：メソッドの中で定義される変数
     //インスタンス変数：classの中(メソッド外）で定義される変数。classが呼び出されるたびに別物が作られる
+    // TODO nakamura [ふぉろー] classが呼び出されるたびに → classのインスタンスが生成されるたびに by jflute (2026/08/05)
+    // というニュアンスですね。
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -348,9 +366,16 @@ public class Step01VariableTest extends PlainTestCase {
     }
 
     //staticを使った問題を作ろうと思ったが、java8ではダメらしい... (inner classにstaticを作れない？）
+    // TODO nakamura [ふぉろー] インスタンスに属したinner classだとstatic作れないですね by jflute (2026/08/05)
+    // static の inner class だと static変数など作れますが。(レアな話)
 
     //Integer B = null の直後にB += 'B' - 'A'; を記載するとエラーが出た。
     //調べた結果：Integerは加算時にアンボクシングしてintに変換してから計算している
     //          その結果、nullをintに変換しようとしてエラーが発生していた。Integer　B の初期値を0にするとエラーが起きなかった。
     //          BigDecimalのaddみたいにそのまま加算できないのかと調べたけど、周りくどい手法以外ないっぽい？
+    // TODO nakamura [ふぉろー] Integer と BigDecimal で違うのは... by jflute (2026/08/05)
+    // Integer はラッパー型ということで、対応するプリミティブ型がいるのに対して、
+    // BigDecimal は厳密にはラッパー型ではないので、自力で add() するしかないんですよね。
+    // float, double をラップしたクラスに見えて、ある意味その通りなのですが、
+    // しっかり1:1で対になっているわけではないので、ボクシングとか特別扱いされているわけではないと。
 }
