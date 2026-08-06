@@ -158,8 +158,27 @@ public class Step01VariableTest extends PlainTestCase {
     // 「安全イコール可読性の典型例」
     //
     // immutableのデメリットは？
-    // o 
-    // TODO jflute 次回1on1でimmutableの続き (2026/07/23)
+    // #1on1: ここから続き (2026/08/06)
+    // o 後から変えたくなった時に、mutableに変える手間 by なかむらさん
+    // o (後で変えなくてものデメリットは？)
+    // o (歴史の中でまとめてみましょう)
+    //
+    // immutableの歴史
+    // o 昔、PCインフラが貧弱、メモリが少ないので、immutableでつどインスタンス方式はつらい
+    // o 言語の文法が貧弱、immutableを実現するのに、手間が掛かる、高度な文法がもっと欲しい
+    // o 今、メモリたくさん、言語もリッチ、immutableの不都合があまり気にならなくなってきた
+    //
+    // immutableにバランス
+    // o 言語や組織や個人によって、若干バランスが変わる
+    // o Java: 歴史(古いクラス)もあるし、コンセプトもあるし(文法が不足もあるし)、100%はむずい
+    //   → なので、jfluteの感覚値だけど、8:2でimmutable/mutableで、頑張るけど無理しないなイメージ
+    //   → jflute自身も↑の感覚だけど、mutableのときは、デメリットが軽減されるような工夫をする。
+    //   → 安全性や可読性を良くする手段は、他にもあるので、immutable使えない時はそれらを使う。
+    // o Kotlin/Scala: かなりimmutable推しの文法が用意されていてやりやすい。100%めざす？
+    //
+    // ぜひ、現場の言語で、immutable/mutableを見つけてみてください。
+    //
+    // done jflute 次回1on1でimmutableの続き (2026/07/23)
 
     //BigDecimalの疑問
     //"Big"ということは、普通のDecimalもある？
@@ -177,6 +196,9 @@ public class Step01VariableTest extends PlainTestCase {
     // ===================================================================================
     //                                                                   Instance Variable
     //                                                                   =================
+    // #1on1: インスタンス変数、Step01VariableTestクラスのインスタンス変数 (2026/08/06)
+    // IDEでテストメソッドを実行する時は、中で new Step01VariableTest() ってやって、
+    // test_...()メソッドを呼び出してるって感じ。
     private String instanceBroadway;
     private int instanceDockside;
     private Integer instanceHangar;
@@ -205,6 +227,10 @@ public class Step01VariableTest extends PlainTestCase {
         instanceBroadway = "bbb";
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
+
+        // #1on1: ローカル変数 → メソッド限定変数  (2026/08/06)
+        // インスタンス変数 → メソッド間共有変数 (厳密にはインスタンスメソッド間で共有) 
+        // インスタンスメソッドって言葉はあまり使われない。普通のメソッドがインスタンスメソッドだから。
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
         log(sea); // your answer? => bbb|0|null|magician  correct = bigband|1|null|magician
     }
@@ -218,7 +244,7 @@ public class Step01VariableTest extends PlainTestCase {
     //Step01VariableTestという同じクラスの中では、privateでも普通に扱える
     //宣言していたものと、引数として新たに宣言したものは別物
 
-    // TODO nakamura [ふぉろー] そうですね、コンパイルエラーになってない時点でprivateに関しては大丈夫と捉えて良いですね by jflute (2026/08/05)
+    // done nakamura [ふぉろー] そうですね、コンパイルエラーになってない時点でprivateに関しては大丈夫と捉えて良いですね by jflute (2026/08/05)
     // そして、メソッド呼び出し時、呼び出し側で指定した変数自体がメソッドの渡っていくのではなく、
     // あくまで中身だけが渡っていって、受け取り側の引数変数で受け取るという感じになります。
     // (厳密には、アドレスがコピーされるだけ)
@@ -244,10 +270,12 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => harbor
     }
     //引数としてのString sea と String sea = "harbor" は別物
-    // TODO nakamura [いいね] yes, yes by jflute (2026/08/05)
+    // done nakamura [いいね] yes, yes by jflute (2026/08/05)
     // 実務でもこういうケースはよくあります。例えば、memberId (会員ID) という変数名で取り扱ってて、
     // 引数側でも memberId という引数変数名で受け取るとか。業務的に同じものということで。
-    // 
+    // #1on1: 変数という箱が旅立つことはない。中身だけ旅立つ。中身はオブジェクト型ならアドレス。 (2026/08/06)
+    // #1on1: immutableで可読性が良くなる、読み飛ばしができる話とつなげると... (2026/08/06)
+    // immutableなインスタンスを引数で渡しているので、helpを読まなくても答えがわかる。
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
@@ -267,18 +295,23 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => harbor correct answer = harbor416;
         log(land); //一応試したけど流石に 415 だった。
         log(sky);
-        // TODO nakamura [ふぉろー] 試すのいいですね！ by jflute (2026/08/05)
+        // done nakamura [ふぉろー] 試すのいいですね！ by jflute (2026/08/05)
         // まず、プリミティブ型は変数に値そのものが入っているイメージですから、
         // help内の ++land; でも、helpのland変数の中身が+1されただけとなります。
         // そして、Integerであっても、++sky; って、要は sky = sky + 1 ですから、
         // これまた help内の sky のアドレスが+1された別インスタンスに差し変わっただけと。
         //
         // それにしても、次の新しいパークで sky ができたらいいですね。
+
+        // #1on1: こっちは mutable なものを引数で渡しているので、helpにいじられる可能性がある (2026/08/06)
+        // なので、こっちは、仮にhelpで何もいじってないにせよ、helpのコードは読まないと答えがわからない。
+        // なのでなので、いじらないのであれば、mutableじゃなくimmutableで受け取って欲しい。
+        // immutableは、読み手にとっての情報になる。だから可読性につながる。
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land, Integer sky) {
         ++land;
-        ++sky;
+        ++sky; // 実質こう: sky = sky + 1;
         sea.append(land);
     }
 
@@ -302,6 +335,7 @@ public class Step01VariableTest extends PlainTestCase {
         ++land;
         String seaStr = sea.toString(); // is "harbor"
         sea = new StringBuilder(seaStr).append(land);
+        // #1on1: ↑mutableなインスタンスを引数で渡してても、実際にappend()しているインスタンスは別物 (2026/08/06)
     }
 
     //sea = new StringBuilder(seaStr).append(land);
@@ -338,7 +372,7 @@ public class Step01VariableTest extends PlainTestCase {
     //ローカル変数・インスタンス変数がわからなかったの調べた
     //ローカル変数：メソッドの中で定義される変数
     //インスタンス変数：classの中(メソッド外）で定義される変数。classが呼び出されるたびに別物が作られる
-    // TODO nakamura [ふぉろー] classが呼び出されるたびに → classのインスタンスが生成されるたびに by jflute (2026/08/05)
+    // done nakamura [ふぉろー] classが呼び出されるたびに → classのインスタンスが生成されるたびに by jflute (2026/08/05)
     // というニュアンスですね。
 
     // ===================================================================================
@@ -366,16 +400,18 @@ public class Step01VariableTest extends PlainTestCase {
     }
 
     //staticを使った問題を作ろうと思ったが、java8ではダメらしい... (inner classにstaticを作れない？）
-    // TODO nakamura [ふぉろー] インスタンスに属したinner classだとstatic作れないですね by jflute (2026/08/05)
+    // done nakamura [ふぉろー] インスタンスに属したinner classだとstatic作れないですね by jflute (2026/08/05)
     // static の inner class だと static変数など作れますが。(レアな話)
 
     //Integer B = null の直後にB += 'B' - 'A'; を記載するとエラーが出た。
     //調べた結果：Integerは加算時にアンボクシングしてintに変換してから計算している
     //          その結果、nullをintに変換しようとしてエラーが発生していた。Integer　B の初期値を0にするとエラーが起きなかった。
     //          BigDecimalのaddみたいにそのまま加算できないのかと調べたけど、周りくどい手法以外ないっぽい？
-    // TODO nakamura [ふぉろー] Integer と BigDecimal で違うのは... by jflute (2026/08/05)
+    // done nakamura [ふぉろー] Integer と BigDecimal で違うのは... by jflute (2026/08/05)
     // Integer はラッパー型ということで、対応するプリミティブ型がいるのに対して、
     // BigDecimal は厳密にはラッパー型ではないので、自力で add() するしかないんですよね。
     // float, double をラップしたクラスに見えて、ある意味その通りなのですが、
     // しっかり1:1で対になっているわけではないので、ボクシングとか特別扱いされているわけではないと。
+    // #1on1: Integerで+で足し算ができる方が、言語に特別扱いされている (2026/08/06)
+    // String, Integerは特別扱いされているクラスと考えてOK。
 }
