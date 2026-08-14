@@ -52,7 +52,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,7 +67,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -107,7 +107,7 @@ public class Step02IfForTest extends PlainTestCase {
         if (land) {
             sea = 10;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10
     }
 
     // ===================================================================================
@@ -123,8 +123,9 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    //ちゃんと定義元まで確認しに行くの大事
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_basic() {
@@ -133,8 +134,10 @@ public class Step02IfForTest extends PlainTestCase {
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
     }
+    //範囲for文って実務で使うんだろうか？インデックスを使わない文行数が減って楽になるけど、何番目をみてるかがわかりづらい？
+    //逆に変数が減ってみやすい人もいるんだろうか？配列外参照が起きづらいけど、後からの変更（N-1まで,i += 2のような変更）が効かないから一長一短？
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
@@ -149,13 +152,15 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside | correct => hangar
     }
+    //breakの条件にばかり目が入って、先に代入していることを忘れてた...反省
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_listforeach_basic() {
         List<String> stageList = prepareStageList();
         StringBuilder sb = new StringBuilder();
+        //String test = "hello";
         stageList.forEach(stage -> {
             if (sb.length() > 0) {
                 return;
@@ -163,10 +168,18 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.contains("i")) {
                 sb.append(stage);
             }
+//            log(test);
+//            test += "world"; 再代入すると怒られる
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    //for (String stage : stageList)って書くのと何が違うんだろう？
+    //--調べた結果--
+    //範囲for文に比べて、forEachは制約が多い
+    //範囲for文：breakでループを抜けられる・for文の外の変数を使いやすい
+    //forEach：returnでもループを抜けられない（continueみたいな挙動になる）・外の変数に再代入できない
+    //forEachの方ができることが少なく、不要なのでは？と思ったが、配列の中身を列挙するときなど、変更を加えないならforEachを使ったほうが安全？
 
     // ===================================================================================
     //                                                                           Challenge
@@ -207,12 +220,22 @@ public class Step02IfForTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * n = 5の場合の、log(list.get(n));の実行結果は？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
         // write your code here
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(1);
+        int n = 5;
+        int sum = 0;
+        for(int i = 0; i < n; i++) {
+            sum = list.get(i) + list.get(i + 1);
+            list.add(sum);
+        }
+        log(list.get(n));
     }
 
     // ===================================================================================
