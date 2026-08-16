@@ -108,6 +108,8 @@ public class Step02IfForTest extends PlainTestCase {
             sea = 10;
         }
         log(sea); // your answer? => 10
+
+        // TODO jflute 1on1にて、漠然読みフォロー予定 (2026/08/16)
     }
 
     // ===================================================================================
@@ -138,6 +140,16 @@ public class Step02IfForTest extends PlainTestCase {
     }
     //範囲for文って実務で使うんだろうか？インデックスを使わない文行数が減って楽になるけど、何番目をみてるかがわかりづらい？
     //逆に変数が減ってみやすい人もいるんだろうか？配列外参照が起きづらいけど、後からの変更（N-1まで,i += 2のような変更）が効かないから一長一短？
+    // TODO nakamura [ふぉろー] 逆に、intあいのfor文を見かけることがなくなっています by jflute (2026/08/16)
+    // webサービスだと、リストをストレートに回して処理しておしまいみたいな場面が多く、
+    // ループ回数を制御したり、ループ回数を判定したりなどすることがほとんどないのです。
+    // ちょっとやりたくなったら...
+    //  int index = 0;
+    //  for (String stage : stageList) {
+    //      ++index;
+    //  }
+    // というように、自分でindexを作ってしまうことも。
+    // (intあいのfor文の使い方を忘れてしまって、思い出すよりは↑をやってしまうみたいな)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
@@ -168,8 +180,8 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.contains("i")) {
                 sb.append(stage);
             }
-//            log(test);
-//            test += "world"; 再代入すると怒られる
+            //            log(test);
+            //            test += "world"; 再代入すると怒られる
         });
         String sea = sb.toString();
         log(sea); // your answer? => dockside
@@ -180,6 +192,10 @@ public class Step02IfForTest extends PlainTestCase {
     //範囲for文：breakでループを抜けられる・for文の外の変数を使いやすい
     //forEach：returnでもループを抜けられない（continueみたいな挙動になる）・外の変数に再代入できない
     //forEachの方ができることが少なく、不要なのでは？と思ったが、配列の中身を列挙するときなど、変更を加えないならforEachを使ったほうが安全？
+    // TODO nakamura [いいね] 違いをしっかりまとめられてGood by jflute (2026/08/16)
+    // そして、「変更を加えないなら安全？」という発想もGood。
+    // TODO jflute 1on1にて、forEach()メソッドの仕組みの話 (2026/08/16)
+    // TODO jflute 1on1にて、"なんでもできること" と "適材適所" のジレンマの話 (2026/08/16)
 
     // ===================================================================================
     //                                                                           Challenge
@@ -231,12 +247,13 @@ public class Step02IfForTest extends PlainTestCase {
         list.add(1);
         int n = 5;
         int sum = 0;
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             sum = list.get(i) + list.get(i + 1);
             list.add(sum);
         }
         log(list.get(n));
     }
+    // TODO nakamura [いいね] むずかしー。なんとか当たりました、ふぅ^^ by jflute (2026/08/16)
 
     // ===================================================================================
     //                                                                        Small Helper
