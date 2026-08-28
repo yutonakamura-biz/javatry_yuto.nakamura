@@ -54,8 +54,9 @@ public class Step03DataTypeTest extends PlainTestCase {
             BigDecimal addedDecimal = amba.add(new BigDecimal(land));
             sea = String.valueOf(addedDecimal);
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 18.4
     }
+    //漠然読みを意識したら、逐次必要な変数を追えていい感じ
 
     // ===================================================================================
     //                                                                           Primitive
@@ -77,13 +78,17 @@ public class Step03DataTypeTest extends PlainTestCase {
             sea = (byte) land;
             if (amba == 2.3D) {
                 sea = (byte) amba;
+                //log(sea); 2.3d と 2.3Dを区別してなかった
             }
         }
         if ((int) dstore > piari) {
             sea = 0;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0 | correct => 2
     }
+    //2.3d と 2.3Dを区別してなかった
+    //他の言語の ===　みたいな完全一致判定はないのかな？
+    //調べた結果：equalsメソッドだと完全一致判定ができるっぽい
 
     // ===================================================================================
     //                                                                              Object

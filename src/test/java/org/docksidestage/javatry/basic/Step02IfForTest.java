@@ -144,12 +144,13 @@ public class Step02IfForTest extends PlainTestCase {
         // 「知る」と「身に付く」の違い。
         //
         // 仮説思考的なコードリーディング(!?)。
-        // TODO nakamura [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/19)
+        // done nakamura [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/19)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
         //
-        // TODO nakamura [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/08/19)
+        // done nakamura [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/08/19)
         // https://jflute.hatenadiary.jp/entry/20150727/fivebooks
         // $リーダブルコードと論点思考は倒さないといけない by なかむらさん
+        // 今は、難易度的にも能力的にもまずは気づかいを取り入れる必要がありそうです...
     }
 
     // ===================================================================================
@@ -180,7 +181,7 @@ public class Step02IfForTest extends PlainTestCase {
     }
     //範囲for文って実務で使うんだろうか？インデックスを使わない文行数が減って楽になるけど、何番目をみてるかがわかりづらい？
     //逆に変数が減ってみやすい人もいるんだろうか？配列外参照が起きづらいけど、後からの変更（N-1まで,i += 2のような変更）が効かないから一長一短？
-    // TODO nakamura [ふぉろー] 逆に、intあいのfor文を見かけることがなくなっています by jflute (2026/08/16)
+    // done nakamura [ふぉろー] 逆に、intあいのfor文を見かけることがなくなっています by jflute (2026/08/16)
     // webサービスだと、リストをストレートに回して処理しておしまいみたいな場面が多く、
     // ループ回数を制御したり、ループ回数を判定したりなどすることがほとんどないのです。
     // ちょっとやりたくなったら...
@@ -246,7 +247,19 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_making() {
         // write if-for here
+        List<String> stageList = prepareStageList();
+        List<String> a_list = new ArrayList<>();
+        stageList.forEach(stage -> {
+            if (stage.contains("a")) {
+                a_list.add(stage);
+            }
+        });
+        a_list.forEach(a_str -> {
+            log(a_str);
+        });
     }
+    //stageList.forEachの中身で、"a"が含まれているものだけのリスト作成とログ表示を同時に行えるけど、指示通りきっちり分けたほうがいいんだろうか？
+    //実務を考えるとリスト作成と出力の責務は分けた方が良さそう
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -293,7 +306,7 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(list.get(n));
     }
-    // TODO nakamura [いいね] むずかしー。なんとか当たりました、ふぅ^^ by jflute (2026/08/16)
+    // done nakamura [いいね] むずかしー。なんとか当たりました、ふぅ^^ by jflute (2026/08/16)
 
     // ===================================================================================
     //                                                                        Small Helper
