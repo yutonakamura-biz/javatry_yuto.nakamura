@@ -324,7 +324,7 @@ public class Step02IfForTest extends PlainTestCase {
     // // 破片プログラマーの悲しみ
     // https://jflute.hatenadiary.jp/entry/20160330/fragramming
     // 
-    // TODO nakamura [読み物課題] プライベートで一切勉強しなくても優秀になる七つのコツ by jflute (2026/09/02)
+    // DONE nakamura [読み物課題] プライベートで一切勉強しなくても優秀になる七つのコツ by jflute (2026/09/02)
     // https://jflute.hatenadiary.jp/entry/20180911/outofprivate
     //
     // 効率よくインプットしていくための努力(量)を泥臭くやる。by jflute

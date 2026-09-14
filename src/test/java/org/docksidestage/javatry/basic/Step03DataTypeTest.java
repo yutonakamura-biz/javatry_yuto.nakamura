@@ -97,8 +97,15 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_object() {
         St3ImmutableStage stage = new St3ImmutableStage("hangar");
         String sea = stage.getStageName();
-        log(sea); // your answer? => 
+        // String sea = stage.stageName;
+        log(sea); // your answer? => hangar
     }
+    //String sea = stage.stageName でも動くけど、get関数？機能を作るメリットはあるんだろうか？
+    //調べた結果：
+    //そもそもinner classだから参照できているだけで、private だから本来はgetterがないと参照できない
+    //メリット①：将来の実装変更に強くなる：複数のファイルから読み取りをしていた場合、getterの仕様を変更するだけで複数ファイルに影響させることができ
+    //       例：全て大文字にして取得、nullなら空文字を返す　など
+    //メリット②：読み取り専用にできる：publicにすると書き換えまで自由に出来てしまうが、制限できる
 
     private static class St3ImmutableStage {
 
