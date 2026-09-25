@@ -115,8 +115,10 @@ public class Step04MethodTest extends PlainTestCase {
         }
         ++sea;
         sea = inParkCount;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 100
     }
+    //久々に引数系の引っ掛けがきて危なかった
+    //当たり前だけど、offAnnualPassport で引数を受け取らない/渡さないようにしたら関数外の変数を参照してくれた
 
     private void offAnnualPassport(boolean hasAnnualPassport) {
         hasAnnualPassport = false;
@@ -146,18 +148,41 @@ public class Step04MethodTest extends PlainTestCase {
      * o replaceAwithB(): 一つのString引数、引数の "A" を "B" に置き換えたStringを戻す 
      * o replaceCwithB(): 一つのString引数、引数の "C" を "B" に置き換えたStringを戻す 
      * o quote(): 二つのString引数、第一引数を第二引数(引用符)で囲ったものを戻す 
-     * o isAvailableLogging(): 引数なし、privateのインスタンス変数 "availableLogging" (初期値:true) を戻す (それも別途作る)  
+     * o isAvailableLogging(): 引数なし、privateのインスタンス変数 "availableLogging" (初期値:true) を戻す (それも別途作る)
      * o showSea(): 一つのString引数、戻り値なし、引数をlog()で表示する
      * </pre>
      */
     public void test_method_making() {
         // use after making these methods
-        //String replaced = replaceCwithB(replaceAwithB("ABC"));
-        //String sea = quote(replaced, "'");
-        //if (isAvailableLogging()) {
-        //    showSea(sea);
-        //}
+        String replaced = replaceCwithB(replaceAwithB("ABC"));
+        String sea = quote(replaced, "'");
+        if (isAvailableLogging()) {
+            showSea(sea);
+        }
     }
 
     // write methods here
+    private String replaceAwithB(String a) {
+        return a.replace("A", "B");
+    }
+
+    private String replaceCwithB(String c) {
+        return c.replace("C", "B");
+    }
+
+    private String quote(String first, String second) {
+        return second + first + second;
+    }
+
+    private Boolean isAvailableLogging() {
+        return availableLogging;
+    }
+
+    private void showSea(String sea) {
+        log(sea);
+    }
+
+    private Boolean availableLogging = true;
 }
+// きちんと指示通りに作れたか不安
+// TODO jflute:問題の意図をつかめないまま無心で書いてしまったのですが、どのような意図が込められていたのでしょうか？

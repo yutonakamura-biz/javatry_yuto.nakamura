@@ -318,19 +318,34 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-        String sea = null;
-        for (String stage : stageList) {
+//        String sea = null;
+        StringBuilder sea = new StringBuilder();
+        StringBuilder flg = new StringBuilder();
+        stageList.forEach(stage -> {
+            if(flg.length() >= 1) {
+                return;
+            }
             if (stage.startsWith("br")) {
-                continue;
+                return;
             }
-            sea = stage;
+            sea.replace(0, sea.length(), stage);
             if (stage.contains("ga")) {
-                break;
+                flg.append("true");
             }
-        }
+        });
+//        for (String stage : stageList) {
+//            if (stage.startsWith("br")) {
+//                continue;
+//            }
+//            sea = stage;
+//            if (stage.contains("ga")) {
+//                break;
+//            }
+//        }
         log(sea); // should be same as before-fix
 
-        // TODO nakamura ↑ここやってない by jflute (2026/09/15)
+        // DONE nakamura ↑ここやってない by jflute (2026/09/15)
+        // flgの実装がかなり無理矢理になってしまいました...
     }
 
     /**
