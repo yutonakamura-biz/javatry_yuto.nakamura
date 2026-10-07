@@ -318,30 +318,45 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-//        String sea = null;
+        //        String sea = null;
         StringBuilder sea = new StringBuilder();
+        // TODO nakamura エクササイズとはいえ、変数名もうちょいどうにか by jflute (2026/10/07)
+        // StringBuilderをflgとして使うよ、というのは表現できているが...
+        // 具体的にどういうflgなのか？がわからない。
+        //
+        // $StringBuilder以外で何か良いものないか？
+        // new boolean[1]; だとboolean型を使ったまま判定できる。
+        // new ArrayList<Boolean>() とかも同じ。
+        //
+        // AtomicBoolean とかもあるが...用途が元々違うものなので微妙感はあるけど。
+        // (スレッドセーフにしている分、パフォーマンス的に不利)
+        //
+        // TODO nakamura 修行++: (後でも良いので) flg変数なくても同じこと実現できる by jflute (2026/10/07)
+        // つまり、sea変数だけを用意して、他の追加の変数は全くなしで。
+        //
         StringBuilder flg = new StringBuilder();
         stageList.forEach(stage -> {
-            if(flg.length() >= 1) {
+            if (flg.length() >= 1) {
                 return;
             }
             if (stage.startsWith("br")) {
                 return;
             }
+            // #1on1: replaceをうまく使いこなしている (2026/10/07)
             sea.replace(0, sea.length(), stage);
             if (stage.contains("ga")) {
                 flg.append("true");
             }
         });
-//        for (String stage : stageList) {
-//            if (stage.startsWith("br")) {
-//                continue;
-//            }
-//            sea = stage;
-//            if (stage.contains("ga")) {
-//                break;
-//            }
-//        }
+        //        for (String stage : stageList) {
+        //            if (stage.startsWith("br")) {
+        //                continue;
+        //            }
+        //            sea = stage;
+        //            if (stage.contains("ga")) {
+        //                break;
+        //            }
+        //        }
         log(sea); // should be same as before-fix
 
         // DONE nakamura ↑ここやってない by jflute (2026/09/15)
