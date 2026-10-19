@@ -318,9 +318,8 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-        //        String sea = null;
         StringBuilder sea = new StringBuilder();
-        // TODO nakamura エクササイズとはいえ、変数名もうちょいどうにか by jflute (2026/10/07)
+        // DONE nakamura エクササイズとはいえ、変数名もうちょいどうにか by jflute (2026/10/07)
         // StringBuilderをflgとして使うよ、というのは表現できているが...
         // 具体的にどういうflgなのか？がわからない。
         //
@@ -334,9 +333,9 @@ public class Step02IfForTest extends PlainTestCase {
         // TODO nakamura 修行++: (後でも良いので) flg変数なくても同じこと実現できる by jflute (2026/10/07)
         // つまり、sea変数だけを用意して、他の追加の変数は全くなしで。
         //
-        StringBuilder flg = new StringBuilder();
+        // まだできなかったのでしばし保留
         stageList.forEach(stage -> {
-            if (flg.length() >= 1) {
+            if(sea.equals("hangar")) {
                 return;
             }
             if (stage.startsWith("br")) {
@@ -344,9 +343,6 @@ public class Step02IfForTest extends PlainTestCase {
             }
             // #1on1: replaceをうまく使いこなしている (2026/10/07)
             sea.replace(0, sea.length(), stage);
-            if (stage.contains("ga")) {
-                flg.append("true");
-            }
         });
         //        for (String stage : stageList) {
         //            if (stage.startsWith("br")) {

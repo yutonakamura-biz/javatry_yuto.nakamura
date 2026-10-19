@@ -195,12 +195,12 @@ public class Step04MethodTest extends PlainTestCase {
         return c.replace("C", "B");
     }
 
-    // TODO nakamura 引数名、第二引数に関しては、業務名があるはずなのでそれを付けましょう by jflute (2026/10/07)
+    // DONE nakamura 引数名、第二引数に関しては、業務名があるはずなのでそれを付けましょう by jflute (2026/10/07)
     // 引用符: quatation, e.g. '' ""
     // 引数名って、普通のローカル変数よりも大事(両方大事だけど比較的)。
     // 引数名って、呼び出し側へのインターフェース。(通信の項目名と言える)
-    private String quote(String first, String second) {
-        return second + first + second;
+    private String quote(String text, String quatation) {
+        return quatation + text + quatation;
     }
 
     private Boolean isAvailableLogging() {
