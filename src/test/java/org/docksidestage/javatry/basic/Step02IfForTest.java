@@ -334,8 +334,9 @@ public class Step02IfForTest extends PlainTestCase {
         // つまり、sea変数だけを用意して、他の追加の変数は全くなしで。
         //
         // まだできなかったのでしばし保留
+        // #1on1: でも発想自体は壁を乗り越えたんじゃないかと (2026/10/20)
         stageList.forEach(stage -> {
-            if(sea.equals("hangar")) {
+            if (sea.equals("hangar")) {
                 return;
             }
             if (stage.startsWith("br")) {

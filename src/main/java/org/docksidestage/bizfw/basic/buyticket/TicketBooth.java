@@ -64,7 +64,7 @@ public class TicketBooth {
         }
         --quantity;
         if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + ONE_DAY_PRICE;
+            salesProceeds = salesProceeds + handedMoney;
         } else { // first purchase
             salesProceeds = ONE_DAY_PRICE;
         }

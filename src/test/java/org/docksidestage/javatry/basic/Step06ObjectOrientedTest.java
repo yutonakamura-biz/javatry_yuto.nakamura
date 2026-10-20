@@ -67,7 +67,11 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         if (handedMoney < oneDayPrice) {
             throw new IllegalStateException("Short money: handedMoney=" + handedMoney);
         }
+        // TODO nakamura salesProceedsが最初nullなのでnull+数値で落ちる by jflute (2026/10/20)
         salesProceeds += oneDayPrice;
+        // #1on1: handedMoneyの意味、一応TicketBoothの既存コメントに書いてある (2026/10/20)
+        // 手渡し金額という解釈で、受け取ったものと、返すもの(お釣り)という意味では合ってるとも言える。
+        // ただ、あんまり変数を使いまわして、途中で意味が変わるのは避けたいので、お釣りはお釣りの変数で良いかなと。
         handedMoney -= oneDayPrice;
 
         //
@@ -86,6 +90,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // simulation: actually this process should be called by other trigger
         if (alreadyIn) {
+            // #1on1: よく見つけました (2026/10/20)
+            // $step6から始めてしまったので、わからないから全部読んでたから見つけられたのかも。
+            // ここ一番抜けやすいところ。でも大事なところ。バグを検知するメッセージがバグってたらカオス。
             throw new IllegalStateException("Already in park by this ticket: displayPrice=" + displayPrice);
         }
         alreadyIn = true;
@@ -99,7 +106,40 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     // oneDayPrice から displayPrice に振り替えた意味はあったんだろうか？
     // -> 年パスとかナイトパスが他にあった場合も displayPrice で処理が統一できるのか！
     // salesProceeds を勝手に累計売上みたいな処理に変えたけど合ってるんだろうか？
+    // #1on1: displayPriceはチケットに印字されてる金額みたいなイメージ (2026/10/20)
+    // $映画館ではあるイメージ
 
+    // #1on1: step6のこのベタ書きとstep5のTicketBoothの違いを体感することが大事 (2026/10/20)
+
+    // TODO jflute 次回どこかで引数入れ替えの大変な話 (2026/10/20)
+    // #1on1: まず、引数入れ替えバグ、やっちゃったらとっても大変ですよね (2026/10/20)
+    //
+    // ひとつ目は、こういう間違いやすいメソッド引数デザインをしないようにすること。
+    // なので、オブジェクトという考え方がある。(step6の次のエクササイズやったら体感できる) 
+    // 一方で、単純に引数の順序を業務的なまとまりが壊れない程度の工夫するみたいな軽減策も。
+    //
+    // ふたつ目、どうしてもこういうメソッドを呼ばないといけないとなったとき。 (2026/10/20)
+    // $まるまる引数の順序のところをコピーしてくるとか？
+    // 間違えないように工夫しようとする姿勢が素晴らしい。
+    // 他のメソッド呼び出しに比べて、ちょっと気を遣う気持ちを生まれさせることが大事。
+    // $C++で競技プログラミングしていたときに、関数の引数が4,5になって気にしてた経験あり。
+    // すでに経験している素晴らしい。経験しないとなかなかこれが危ないポイントってならない人も。
+    //
+    // 指差し確認をすることで間違う確率を下げることができる。
+    // でも指差し確認しようとするか？
+    //
+    // すべてのメソッド呼び出しで指差し確認をすれば間違いは減るけど、たぶんしない。(とても面倒)
+    // 間違いポイントを知っているかどうか？
+    // 経験があるから、こういうメソッドを見たら、集中力が自然と高まる。
+    // その集中力の上下のコントロールが大事。
+    //
+    // 間違いポイントを経験からどんどん積み重ねていくこと。
+    // 人から聞いて間違いポイントも自分のものとして積み重ねていくこと。
+    //
+    // 「技術話」というより、「ものづくり人としてのスキル話」。
+    //
+    // 優秀な人ほど、こういった地味なスキルもしっかり持ってる印象。
+    //
     private void saveBuyingHistory(int quantity, Integer salesProceeds, int displayPrice, boolean alreadyIn) {
         if (alreadyIn) {
             // simulation: only logging here (normally e.g. DB insert)
